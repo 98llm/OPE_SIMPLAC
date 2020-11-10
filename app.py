@@ -1,6 +1,6 @@
-from flask import Flask, session, render_template, request, redirect, url_for
+from flask import Flask, session, render_template, request, url_for, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, logout_user, LoginManager
+from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
 
@@ -38,49 +38,35 @@ class User(db.Model, UserMixin):
 
     def __init__(self, username, password):
         self.username = username
-        self.password = generate_password_hash(password)
+        self.password = generate_password_hash(password, "sha256")
 
-
+    def verify_password(self, pwd):
+        return check_password_hash(self.password, pwd)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
-'''
-@app.route('/')
-def index():
-    users = User.query.filter_by(username = 'teste').first()
-    return render_template('home.html', users=users)
-'''
 
 @app.route('/')
-def index():
-    if 0 == 0:
-        return redirect(url_for('login'))
-    return render_template('login.html')
-
-@app.route('/home')
+@login_required
 def home():
     return render_template('home.html')
 
-@app.route('/login', methods = ['POST', 'GET'])
+
+
+@app.route('/login', methods = ['POST','GET'])
 def login():
-    next = request.args.get('next')
-    if request.method == 'POST':
-        user = request.form['username']
-        pwd = request.form['password']
-        user = User.query.filter_by(username = user).first()
-
-        checkPwd = check_password_hash(user.password, pwd)
-
-        if not user or not checkPwd:
-            return redirect(url_for('login'))
-        
-        login_user(user)
-        return redirect(url_for('home'))
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = User.query.filter_by(username = username).first()
+    if user:
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('home'))
 
     return render_template('login.html')
-
+    
 
 @app.route('/logout')
 def logout():

@@ -1,4 +1,4 @@
-
+'''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,3 +21,10 @@ class User(db.Model):
     def __repr__(self):
         return f'<user: {self.username}>'
 
+'''
+a = None
+
+if a :
+    print('True')
+else:
+    print('falso')
