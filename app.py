@@ -2,6 +2,7 @@ from flask import Flask, session, render_template, request, url_for, flash, redi
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from markupsafe import escape
 import psycopg2
 
 #Configure app
@@ -16,6 +17,7 @@ db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
 
+login_manager.login_view = "login"
 
 connection = psycopg2.connect(
     host ="localhost",
@@ -50,10 +52,8 @@ def load_user(user_id):
 
 @app.route('/')
 @login_required
-def home():
-    return render_template('home.html')
-
-
+def index():
+    return render_template('home.html', user= escape(session['username']))
 
 @app.route('/login', methods = ['POST','GET'])
 def login():
@@ -63,12 +63,12 @@ def login():
     if user:
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('home'))
-
+            session['username'] = user.username
+            return redirect(url_for('index'))
     return render_template('login.html')
-    
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
