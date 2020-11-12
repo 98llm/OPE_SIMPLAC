@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
-</head>
-<body>
-    <table>
-    <th>usuarios</th>
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
 
-        <tr>
-            <td>bem vindo {{user}}</td>
-        </tr>
-        <a href="/logout">link text</a>
+{%block head%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+{%endblock%}
 
-        </table>
-</body>
-</html>
+
+{% block content %}
+
+    <h1>Bem vindo {{current_user.username}}</h1>
+
+{% endblock %}

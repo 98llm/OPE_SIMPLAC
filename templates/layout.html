@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    <title>{% block title %}{% endblock %} - SIMPLAC</title>
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    {%if user%}
+    <div class="content">
+        <header>
+            <div class="upperNav">
+                <nav class="navbar-nav navbar-light bg-light navbar-expand-lg">
+                    <div class="container">
+                        <div id="navbar1">
+                            <a class="navbar-brand" href="/">
+                                <img src="../static/images/Brand.png" width="30" height="30"
+                                    class="d-inline-block align-top " alt="Simplac-Brand">
+                                GESOFT
+                            </a>
+                            <div class="navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="/logout">
+                                            <img src="../static/images/botao-logout.png" width="25" height="25"
+                                                class="" alt="Simplac-Brand">
+                                            <span>Log Out</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+    </div>
+    {%endif%}
+    {% block content %}
+    {% endblock %}
+
+    <div id="footer">
+        {% block footer %}
+        {% endblock %}
+    </div>
+
+    {% block scripts %}{% endblock %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+</body>
+
+</html>

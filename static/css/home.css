@@ -1,3 +1,18 @@
 body{
-    background-color: #A8D4AD;
+    background-color: #EBEBEB;
 }
+
+header .upperNav .container {
+    margin: 0 1%;
+    padding: 0 0;
+}
+
+header .upperNav #navbar1 {
+    display: flex;
+    flex: 0 0 auto;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 15px;
+}
+
